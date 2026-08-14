@@ -16,6 +16,8 @@ NumPy, no machine learning involved.
 
 </div>
 
+![Pipeline in action: input, HSV mask and result classified as CENTER](docs/pipeline_exemplo.png)
+
 ---
 
 ## The problem

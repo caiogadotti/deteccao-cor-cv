@@ -16,6 +16,8 @@ OpenCV e NumPy, sem aprendizado de máquina.
 
 </div>
 
+![Pipeline em ação: entrada, máscara HSV e resultado classificado como CENTRO](docs/pipeline_exemplo.png)
+
 ---
 
 ## O problema
