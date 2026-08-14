@@ -113,13 +113,18 @@ h1.titulo {
 
 .legenda { text-align: center; color: var(--texto-fraco); font-size: 0.68rem; margin-top: 0.4rem; }
 
-.stTabs [data-baseweb="tab-list"] { gap: 1.2rem; border-bottom: 1px solid var(--borda); }
-.stTabs [data-baseweb="tab"] {
-    color: var(--texto-fraco); font-weight: 600; font-size: 0.85rem;
-    padding: 0.5rem 0; background: transparent;
+button[data-testid="stBaseButton-segmented_control"] {
+    background: var(--superficie-alta) !important;
+    border: 1px solid var(--borda) !important;
+    color: var(--texto-suave) !important;
+    font-weight: 600 !important;
 }
-.stTabs [aria-selected="true"] { color: var(--texto); }
-.stTabs [data-baseweb="tab-highlight"] { background-color: var(--destaque); }
+button[data-testid="stBaseButton-segmented_controlActive"] {
+    background: var(--destaque) !important;
+    border-color: var(--destaque) !important;
+    color: #131316 !important;
+}
+button[data-testid="stBaseButton-segmented_controlActive"] p { color: #131316 !important; }
 
 div[data-testid="stFileUploaderDropzone"], div[data-testid="stCameraInput"] video {
     background: var(--superficie-alta); border: 1.5px dashed var(--borda); border-radius: 12px;
@@ -230,29 +235,37 @@ col_entrada, col_resultado = st.columns([1, 1], gap="large")
 with col_entrada:
     st.markdown('<div class="painel-titulo">Entrada</div>', unsafe_allow_html=True)
 
-    aba_camera, aba_upload, aba_simulacao = st.tabs(["Câmera", "Enviar imagem", "Sem câmera"])
+    modo = st.segmented_control(
+        "Modo de entrada",
+        ["Câmera", "Enviar imagem", "Sem câmera"],
+        default="Câmera",
+        label_visibility="collapsed",
+    )
     imagem_pil = None
 
-    with aba_camera:
+    # só o widget do modo selecionado é instanciado -- ao trocar de modo, o
+    # st.camera_input anterior é removido da árvore e o navegador libera a
+    # câmera de verdade, em vez de ficar ligada escondida atrás de uma aba
+    if modo == "Câmera":
         foto = st.camera_input("Tirar foto", label_visibility="collapsed")
         if foto is not None:
             imagem_pil = Image.open(foto)
 
-    with aba_upload:
+    elif modo == "Enviar imagem":
         arquivo = st.file_uploader(
             "Imagem", type=["png", "jpg", "jpeg"], label_visibility="collapsed"
         )
         if arquivo is not None:
             imagem_pil = Image.open(arquivo)
             st.image(imagem_pil, use_container_width=True)
-        elif foto is None:
+        else:
             st.markdown(
                 '<p style="color:#6b7590; text-align:center; padding: 2.5rem 0;">'
                 "Arraste uma imagem ou clique para selecionar</p>",
                 unsafe_allow_html=True,
             )
 
-    with aba_simulacao:
+    elif modo == "Sem câmera":
         st.markdown(
             '<p class="legenda" style="margin-bottom:0.8rem;">Sem webcam disponível? '
             "Gera um quadrado verde sintético na posição escolhida, para testar o pipeline "
@@ -262,9 +275,8 @@ with col_entrada:
         posicao_simulada = st.radio(
             "Posição do objeto simulado", ["ESQUERDA", "CENTRO", "DIREITA"], horizontal=True
         )
-        if foto is None and arquivo is None:
-            imagem_pil = gerar_imagem_simulada(posicao_simulada)
-            st.image(imagem_pil, use_container_width=True)
+        imagem_pil = gerar_imagem_simulada(posicao_simulada)
+        st.image(imagem_pil, use_container_width=True)
 
 with col_resultado:
     st.markdown('<div class="painel">', unsafe_allow_html=True)
@@ -288,6 +300,8 @@ with col_resultado:
         st.markdown(
             f"""
             <div style="margin-top:1rem;">
+                <div class="info-linha"><span class="info-chave">Cobertura da cor-alvo</span>
+                    <span class="info-valor">{num(resultado.cobertura_percentual, 1)}% da imagem</span></div>
                 <div class="info-linha"><span class="info-chave">Área do contorno</span>
                     <span class="info-valor">{num(resultado.area)} px²</span></div>
                 <div class="info-linha"><span class="info-chave">Centro detectado</span>
@@ -296,6 +310,14 @@ with col_resultado:
             """,
             unsafe_allow_html=True,
         )
+
+        if resultado.cobertura_percentual > 60:
+            st.markdown(
+                '<p class="legenda" style="color:#f5a524; text-align:left; margin-top:0.6rem;">'
+                "⚠ Mais da metade da imagem tem essa cor — provavelmente é o fundo da cena, "
+                "não um objeto isolado.</p>",
+                unsafe_allow_html=True,
+            )
 
         with st.expander("Ver máscara HSV"):
             st.image(resultado.mascara, use_container_width=True, clamp=True)

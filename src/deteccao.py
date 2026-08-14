@@ -27,6 +27,17 @@ class ResultadoDeteccao:
     centro: tuple | None
     mascara: np.ndarray
     contorno: np.ndarray | None
+    cobertura_percentual: float
+
+
+def _cobertura(mascara: np.ndarray) -> float:
+    """Fração da imagem (0-100%) que caiu dentro do intervalo de cor.
+
+    Independe de haver ou não um contorno acima da área mínima -- ajuda a
+    diagnosticar casos como um fundo inteiro da cor-alvo (cobertura alta,
+    mas não é "um objeto", é o cenário inteiro).
+    """
+    return float((mascara > 0).mean() * 100)
 
 
 def detectar_posicao(
@@ -44,21 +55,22 @@ def detectar_posicao(
     altura, largura = frame_bgr.shape[:2]
     hsv = cv2.cvtColor(frame_bgr, cv2.COLOR_BGR2HSV)
     mascara = cv2.inRange(hsv, np.array(cor_baixa), np.array(cor_alta))
+    cobertura = _cobertura(mascara)
 
     contornos, _ = cv2.findContours(mascara, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     if not contornos:
-        return ResultadoDeteccao("SEM_DETECCAO", 0.0, None, mascara, None)
+        return ResultadoDeteccao("SEM_DETECCAO", 0.0, None, mascara, None, cobertura)
 
     maior = max(contornos, key=cv2.contourArea)
     area = cv2.contourArea(maior)
 
     if area <= area_minima:
-        return ResultadoDeteccao("SEM_DETECCAO", area, None, mascara, None)
+        return ResultadoDeteccao("SEM_DETECCAO", area, None, mascara, None, cobertura)
 
     momentos = cv2.moments(maior)
     if momentos["m00"] == 0:
-        return ResultadoDeteccao("SEM_DETECCAO", area, None, mascara, None)
+        return ResultadoDeteccao("SEM_DETECCAO", area, None, mascara, None, cobertura)
 
     cx = int(momentos["m10"] / momentos["m00"])
     cy = int(momentos["m01"] / momentos["m00"])
@@ -71,7 +83,7 @@ def detectar_posicao(
     else:
         comando = "CENTRO"
 
-    return ResultadoDeteccao(comando, area, (cx, cy), mascara, maior)
+    return ResultadoDeteccao(comando, area, (cx, cy), mascara, maior, cobertura)
 
 
 def desenhar_resultado(frame_bgr: np.ndarray, resultado: ResultadoDeteccao, cor_bgr: tuple) -> np.ndarray:
