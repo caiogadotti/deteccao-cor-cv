@@ -33,7 +33,7 @@ def gerar_imagem_simulada(posicao: str) -> Image.Image:
 
 st.set_page_config(
     page_title="Detector de Posição por Cor",
-    page_icon="🎯",
+    page_icon=Image.open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "docs", "favicon.png")),
     layout="wide",
     initial_sidebar_state="collapsed",
 )
