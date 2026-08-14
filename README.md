@@ -52,10 +52,12 @@ treinamento: o pipeline roda direto sobre a imagem que você enviar.
 
 ## O que o app faz
 
-**Três formas de entrada.** Tirar uma foto pela webcam do navegador, enviar
-uma imagem do computador, ou gerar uma imagem sintética quando não há câmera
-disponível. O mesmo problema que o professor resolveu no script de
-demonstração, adaptado para dentro do app.
+**Três formas de entrada, uma ativa por vez.** Tirar uma foto pela webcam do
+navegador, enviar uma imagem do computador, ou gerar uma imagem sintética
+quando não há câmera disponível. O mesmo problema que o professor resolveu
+no script de demonstração, adaptado para dentro do app. Trocar de modo
+desliga a câmera de verdade: só o widget do modo escolhido fica montado na
+página, então a webcam não continua ativa escondida atrás de outra aba.
 
 **Calibração ao vivo.** Quatro cores pré-configuradas (verde, azul, vermelho,
 amarelo) ou um modo manual com sliders de matiz (H), saturação (S) e brilho
@@ -65,6 +67,11 @@ para testar em pelo menos duas condições de luz diferentes.
 **Mostrar por quê.** O resultado não é só o rótulo: a imagem anotada mostra o
 contorno e o centro detectados, e uma seção separada mostra a máscara binária
 usada para chegar até ali. Dá para ver exatamente o que o algoritmo enxergou.
+
+**Cobertura da cor-alvo.** Além da área do maior contorno, o app mostra que
+fração da imagem inteira caiu dentro do intervalo de cor. Se essa cobertura
+passar de 60%, aparece um aviso: é provável que o algoritmo esteja
+detectando o fundo da cena, não um objeto isolado.
 
 ---
 

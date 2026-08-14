@@ -53,10 +53,13 @@ the pipeline runs directly on whatever image you feed it.
 
 ## What the app does
 
-**Three ways to feed it an image.** Take a photo through the browser
-webcam, upload an image from your computer, or generate a synthetic test
-image when no camera is available. The same problem the professor solved in
-the demonstration script, adapted inside the app.
+**Three ways to feed it an image, one active at a time.** Take a photo
+through the browser webcam, upload an image from your computer, or generate
+a synthetic test image when no camera is available. The same problem the
+professor solved in the demonstration script, adapted inside the app.
+Switching modes actually turns the camera off: only the widget for the
+selected mode stays mounted on the page, so the webcam does not keep
+running hidden behind another tab.
 
 **Live calibration.** Four preset colors (green, blue, red, yellow) or a
 manual mode with hue (H), saturation (S) and brightness (V) sliders. HSV
@@ -66,6 +69,11 @@ test under at least two different lighting conditions.
 **Show why.** The result is not just a label: the annotated image shows the
 detected contour and centroid, and a separate section shows the binary mask
 used to get there. You can see exactly what the algorithm saw.
+
+**Target color coverage.** Besides the largest contour's area, the app
+shows what fraction of the whole image fell inside the color range. When
+that coverage goes above 60%, a warning appears: the algorithm is likely
+picking up the scene's background, not an isolated object.
 
 ---
 
