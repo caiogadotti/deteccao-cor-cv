@@ -33,7 +33,7 @@ def gerar_imagem_simulada(posicao: str) -> Image.Image:
 
 st.set_page_config(
     page_title="Detector de Posição por Cor",
-    page_icon="✦",
+    page_icon="🎯",
     layout="wide",
     initial_sidebar_state="collapsed",
 )
