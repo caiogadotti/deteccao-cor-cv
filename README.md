@@ -12,6 +12,8 @@ OpenCV e NumPy, sem aprendizado de máquina.
 [![OpenCV](https://img.shields.io/badge/OpenCV-5C3EE8?logo=opencv&logoColor=white)](https://opencv.org)
 [![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?logo=streamlit&logoColor=white)](https://streamlit.io)
 
+[![App online](https://img.shields.io/badge/testar%20o%20app-online-F5A524?logo=streamlit&logoColor=white)](https://deteccao-cor.streamlit.app/)
+
 **Português** &nbsp;·&nbsp; [English](README.en.md)
 
 </div>
@@ -39,6 +41,10 @@ sofisticado entrar em cena nas próximas aulas.
 ---
 
 ## Como rodar
+
+O app está no ar em **[deteccao-cor.streamlit.app](https://deteccao-cor.streamlit.app/)**, sem instalar nada.
+
+Para rodar na sua máquina:
 
 ```bash
 git clone https://github.com/caiogadotti/deteccao-cor-cv.git

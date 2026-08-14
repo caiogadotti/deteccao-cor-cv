@@ -12,6 +12,8 @@ NumPy, no machine learning involved.
 [![OpenCV](https://img.shields.io/badge/OpenCV-5C3EE8?logo=opencv&logoColor=white)](https://opencv.org)
 [![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?logo=streamlit&logoColor=white)](https://streamlit.io)
 
+[![Live app](https://img.shields.io/badge/try%20the%20app-live-F5A524?logo=streamlit&logoColor=white)](https://deteccao-cor.streamlit.app/)
+
 [Português](README.md) &nbsp;·&nbsp; **English**
 
 </div>
@@ -40,6 +42,10 @@ the picture in later classes.
 ---
 
 ## Running it
+
+The app is live at **[deteccao-cor.streamlit.app](https://deteccao-cor.streamlit.app/)**, nothing to install.
+
+To run it locally:
 
 ```bash
 git clone https://github.com/caiogadotti/deteccao-cor-cv.git
