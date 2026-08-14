@@ -328,6 +328,6 @@ with st.expander("Como o pipeline funciona"):
 
 st.markdown(
     '<div class="rodape">OpenCV · NumPy · Streamlit &nbsp;|&nbsp; '
-    "Aula 1 — LCML Engenharia de Sistemas Ciber-Físicos 2026</div>",
+    "Aula 1 &nbsp;|&nbsp; LCML Engenharia de Sistemas Ciber-Físicos 2026</div>",
     unsafe_allow_html=True,
 )

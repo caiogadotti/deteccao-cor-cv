@@ -5,12 +5,14 @@
 **Percepção visual de um sistema ciber-físico: da câmera à decisão.**
 
 Um pipeline de visão computacional que detecta um objeto colorido numa imagem
-e classifica sua posição — esquerda, centro ou direita — usando apenas
+e classifica sua posição, esquerda, centro ou direita, usando apenas
 OpenCV e NumPy, sem aprendizado de máquina.
 
 [![Python](https://img.shields.io/badge/Python-3.10+-3776AB?logo=python&logoColor=white)](https://www.python.org)
 [![OpenCV](https://img.shields.io/badge/OpenCV-5C3EE8?logo=opencv&logoColor=white)](https://opencv.org)
 [![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?logo=streamlit&logoColor=white)](https://streamlit.io)
+
+**Português** &nbsp;·&nbsp; [English](README.en.md)
 
 </div>
 
@@ -26,10 +28,10 @@ imagem, identificar onde um objeto está e traduzir isso numa decisão discreta.
 > **CENTRO**, **DIREITA** ou **SEM_DETECCAO**, baseado na posição horizontal
 > do maior objeto da cor escolhida.
 
-Esse loop (percepção → decisão) é a base de qualquer sistema ciber-físico
+Esse loop, percepção e decisão, é a base de qualquer sistema ciber-físico
 real: um carrinho que segue uma faixa, um braço robótico que localiza uma
 peça, um drone que evita obstáculos. Aqui ele é resolvido do jeito mais
-simples possível — limiarização de cor — antes de qualquer modelo mais
+simples possível, limiarização de cor, antes de qualquer modelo mais
 sofisticado entrar em cena nas próximas aulas.
 
 ---
@@ -44,7 +46,7 @@ streamlit run app.py
 ```
 
 O app abre em `http://localhost:8501`. Não precisa de dataset nem de
-treinamento — o pipeline roda direto sobre a imagem que você enviar.
+treinamento: o pipeline roda direto sobre a imagem que você enviar.
 
 ---
 
@@ -52,12 +54,12 @@ treinamento — o pipeline roda direto sobre a imagem que você enviar.
 
 **Três formas de entrada.** Tirar uma foto pela webcam do navegador, enviar
 uma imagem do computador, ou gerar uma imagem sintética quando não há câmera
-disponível — o mesmo problema que o professor resolveu no script de
+disponível. O mesmo problema que o professor resolveu no script de
 demonstração, adaptado para dentro do app.
 
 **Calibração ao vivo.** Quatro cores pré-configuradas (verde, azul, vermelho,
 amarelo) ou um modo manual com sliders de matiz (H), saturação (S) e brilho
-(V). A calibração em HSV é sensível à iluminação — é por isso que a aula pede
+(V). A calibração em HSV é sensível à iluminação: é por isso que a aula pede
 para testar em pelo menos duas condições de luz diferentes.
 
 **Mostrar por quê.** O resultado não é só o rótulo: a imagem anotada mostra o
@@ -72,17 +74,17 @@ Os mesmos cinco passos do notebook `aula01_camera.ipynb`, isolados em
 `src/deteccao.py` como uma função pura, testável fora do Streamlit:
 
 ```
-imagem BGR → conversão para HSV → limiarização (cv2.inRange)
-           → maior contorno (cv2.findContours) → centro de massa (cv2.moments)
-           → classificação por posição horizontal
+imagem BGR -> conversão para HSV -> limiarização (cv2.inRange)
+           -> maior contorno (cv2.findContours) -> centro de massa (cv2.moments)
+           -> classificação por posição horizontal
 ```
 
 | Etapa | Função | Por que |
 |---|---|---|
-| BGR → HSV | `cv2.cvtColor` | Separar cor de brilho é mais fácil em HSV do que em RGB — a mesma cor sob luz forte ou fraca cai na mesma faixa de matiz |
+| BGR para HSV | `cv2.cvtColor` | Separar cor de brilho é mais fácil em HSV do que em RGB. A mesma cor sob luz forte ou fraca cai na mesma faixa de matiz |
 | Limiarização | `cv2.inRange` | Cria uma máscara binária: branco onde o pixel está dentro do intervalo de cor |
 | Contornos | `cv2.findContours` | Encontra as regiões conectadas de pixels brancos na máscara |
-| Centro de massa | `cv2.moments` | Calcula o centroide do maior contorno — o ponto que representa "onde está o objeto" |
+| Centro de massa | `cv2.moments` | Calcula o centroide do maior contorno, o ponto que representa "onde está o objeto" |
 | Classificação | comparação com margem | Compara a posição horizontal do centro com o meio da imagem, usando uma faixa de tolerância para não oscilar entre CENTRO e ESQUERDA/DIREITA por 1 pixel |
 
 **Por que uma margem em vez de comparar direto com o meio exato:** sem
@@ -112,7 +114,7 @@ Exigir uma área mínima descarta esse ruído.
 
 - [x] A câmera abre sem erro (via `st.camera_input`, pelo navegador)
 - [x] O quadro é exibido com o resultado sobreposto
-- [x] Detecção funciona em mais de uma condição — a calibração manual (sliders
+- [x] Detecção funciona em mais de uma condição: a calibração manual (sliders
       de H/S/V) permite reajustar sem tocar no código quando a luz muda
 - [x] A regra de decisão está implementada e comentada (`src/deteccao.py`)
 - [x] Repositório com `README.md` e `requirements.txt`
